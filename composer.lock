@@ -1426,11 +1426,11 @@
             },
             "autoload": {
                 "files": [
-                    "src/Illuminate/Collections/helpers.php",
+                    "src/Illuminate/Collections/Helpers.php",
                     "src/Illuminate/Events/functions.php",
                     "src/Illuminate/Filesystem/functions.php",
-                    "src/Illuminate/Foundation/helpers.php",
-                    "src/Illuminate/Support/helpers.php"
+                    "src/Illuminate/Foundation/Helpers.php",
+                    "src/Illuminate/Support/Helpers.php"
                 ],
                 "psr-4": {
                     "Illuminate\\": "src/Illuminate/",
@@ -1504,7 +1504,7 @@
             },
             "autoload": {
                 "files": [
-                    "src/helpers.php"
+                    "src/Helpers.php"
                 ],
                 "psr-4": {
                     "Laravel\\Prompts\\": "src/"
@@ -2199,7 +2199,7 @@
             },
             "autoload": {
                 "files": [
-                    "src/helpers.php"
+                    "src/Helpers.php"
                 ],
                 "psr-4": {
                     "Livewire\\": "src/"
@@ -3791,7 +3791,7 @@
             },
             "autoload": {
                 "files": [
-                    "src/helpers.php"
+                    "src/Helpers.php"
                 ],
                 "psr-4": {
                     "Spatie\\Permission\\": "src"
@@ -6459,7 +6459,7 @@
             },
             "autoload": {
                 "files": [
-                    "src/helper.php"
+                    "src/Helper.php"
                 ],
                 "psr-4": {
                     "Yajra\\DataTables\\": "src/"

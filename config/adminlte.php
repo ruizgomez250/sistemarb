@@ -72,7 +72,7 @@ return [
     */
 
     'logo' => '<b></b>',
-    'logo_img' => 'vendor/adminlte/dist/img/e.png',
+    'logo_img' => 'vendor/adminlte/dist/img/ciudadano360.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -94,7 +94,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/elarca.png',
+            'path' => 'vendor/adminlte/dist/img/ciudadano360.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 180,
@@ -117,7 +117,7 @@ return [
     'preloader' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/elarca.png',
+            'path' => 'vendor/adminlte/dist/img/ciudadano360.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 370,
@@ -299,92 +299,37 @@ return [
 
     'menu' => [
         [
-            'text'       => 'Equipo y Candidatos',
-            'icon'       => 'fas fa-map-marker-alt',
+            'text'       => 'Dashboard',
+            'icon'       => 'fas fa-tachometer-alt',
             'icon_color' => 'primary',
-            'classes'    => 'custom-icon-box custom-icon-box-primary',
-            'content'    => '<i class="fas fa-map-marker-alt"></i>',
-            'url'        => '/ciudades',    // La ruta hacia la vista que mostramos
+            'url'        => '/home',
         ],
         [
-            'text'       => 'Árbol de Candidaturas',
-            'icon'       => 'fas fa-sitemap',  // Cambié a fa-sitemap que es más apropiado para un árbol
-            'icon_color' => 'primary',            
-            'can'        => 'Arbol',
-            'url'        => '/arbol',    // Usando el nombre de la ruta en lugar de la URL directa
-        ],
-        [
-            'text'       => 'Equipo',
-            'icon'       => 'fas fa-users',
-            'icon_color' => 'info',
-            'classes'    => 'custom-icon-box custom-icon-box-blue',
-            'content'    => '<i class="fas fa-users"></i>',
-            'can'        => 'Menu Equipo',
-            'url'        => 'equipo',
-        ],
-
-        [
-            'text'       => 'Dirigente',
-            'icon'       => 'fas fa-user-tie',
-            'icon_color' => 'warning',
-            'classes'    => 'custom-icon-box custom-icon-box-warning',
-            'content'    => '<i class="fas fa-user-tie"></i>',
-            'can'        => 'Menu Dirigente',
-            'url'        => '/dirigente/create',
-        ],
-
-        [
-            'text'       => 'Puntero',
-            'icon'       => 'fas fa-user-friends',
-            'icon_color' => 'light',
-            'classes'    => 'custom-icon-box custom-icon-box-dark',
-            'content'    => '<i class="fas fa-user-friends"></i>',
-            'can'        => 'Menu Puntero',
-            'url'        => '/puntero/create',
-        ],
-        [
-            'text'       => 'Reportes',
-            'icon'       => 'fas fa-file-alt',
-            'icon_color' => 'primary',
-            'classes'    => 'custom-icon-box custom-icon-box-dark',
-            'content'    => '<i class="fas fa-user-friends"></i>',
-            'can'        => 'Reportes',
-            'submenu'        => [
-                [
-                    'text' => 'Votantes por Dirigente',
-                    'url'  => '/punterosyvotantespordirigente',
-                ],
-                [
-                    'text' => 'Por local de votacion',
-                    'url'  => '/porlocal',
-                ],
-                [
-                    'text' => 'Todos los Vehiculos',
-                    'url'  => '/vehiculosporsistema',
-                ],
-                
-            ],
-
-
-        ],
-        [
-            'text'       => 'Vehiculo',
-            'icon'       => 'fas fa-car',
+            'text'       => 'Registros',
+            'icon'       => 'fas fa-address-book',
             'icon_color' => 'success',
-            'classes'    => 'custom-icon-box custom-icon-box-dark',
-            'content'    => '<i class="fas fa-user-friends"></i>',
-            'can'        => 'Vehiculo',
-            'url'        => '/vehiculo',
+            'url'        => '/registros',
         ],
         [
-            'text'       => 'Miembros de Mesa',
-            'icon'       => 'fas fa-users',
-            'icon_color' => 'primary',
-            'classes'    => 'custom-icon-box custom-icon-box-dark',
-            'content'    => '<i class="fas fa-user-check"></i>',
-            'can'        => 'Miembros de Mesa',
-            'url'        => '/miembros-de-mesa/create',
+            'text'       => 'Configuraciones',
+            'icon'       => 'fas fa-cogs',
+            'icon_color' => 'info',
+            'submenu'    => [
+                [
+                    'text'       => 'Motivos',
+                    'icon'       => 'fas fa-tags',
+                    'icon_color' => 'warning',
+                    'url'        => '/motivos',
+                ],
+                [
+                    'text'       => 'Profesiones',
+                    'icon'       => 'fas fa-briefcase',
+                    'icon_color' => 'info',
+                    'url'        => '/profesiones',
+                ],
+            ],
         ],
+        
 
 
         // [
@@ -417,22 +362,22 @@ return [
             'classes' => 'custom-icon-box-black',
             'content' => '<i class="fas fa-box"></i>',
         ],
-        [
-            'text' => 'Administracion General',
-            'topnav'     => true,
-            'url'  => 'useradmin',
-            'classes' => 'custom-icon-box-black',
-            'content' => '<i class="fas fa-box"></i>',
-            'can'        => 'Administracion General',
-        ],
-        [
-            'text' => 'Configuración de Montos',
-            'topnav' => true,
-            'url' => 'configuracion-montos',
-            'classes' => 'custom-icon-box-black',
-            'content' => '<i class="fas fa-dollar-sign"></i>',
-            'can' => 'Configuracion de montos', // aquí va el permiso que permita ver esta ruta
-        ],
+        // [
+        //     'text' => 'Administracion General',
+        //     'topnav'     => true,
+        //     'url'  => 'useradmin',
+        //     'classes' => 'custom-icon-box-black',
+        //     'content' => '<i class="fas fa-box"></i>',
+        //     'can'        => 'Administracion General',
+        // ],
+        // [
+        //     'text' => 'Configuración de Montos',
+        //     'topnav' => true,
+        //     'url' => 'configuracion-montos',
+        //     'classes' => 'custom-icon-box-black',
+        //     'content' => '<i class="fas fa-dollar-sign"></i>',
+        //     'can' => 'Configuracion de montos', // aquí va el permiso que permita ver esta ruta
+        // ],
 
 
 

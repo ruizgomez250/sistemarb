@@ -1,108 +1,157 @@
 <?php
+// routes/web.php
 
-use App\Http\Controllers\CiudadElectoralController;
-use App\Http\Controllers\ConfiguracionMontoController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\MotivoController;
+use App\Http\Controllers\ProfesionController;
+use App\Http\Controllers\SocioController;
+use App\Http\Controllers\CopavicController;
+use App\Http\Controllers\CoopUniversitariaController;
+use App\Http\Controllers\PadronIluminadoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MesaEntradaController;
-use App\Http\Controllers\DirigenteController;
-use App\Http\Controllers\EquipoController;
-use App\Http\Controllers\MiembroDeMesaController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\PunteroController;
-use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SistemaController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VehiculoController;
-use App\Http\Controllers\VehiculoPunteroController;
-use App\Http\Controllers\VotanteController;
 
-
-
-
-
-
-Route::get('votante/buscador', [VotanteController::class, 'buscador']);
-Route::get('/votantes/datatables', [VotanteController::class, 'datatables'])->name('votantes.datatables');
-Route::post('/votante/buscar-simple', [VotanteController::class, 'buscarSimplePorCedula'])
-    ->name('votante.buscar.simple');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Auth::routes();
-Route::get('/home', [SistemaController::class, 'mostrarCiudades'])
+
+// Ruta principal
+Route::get('/home', [DashboardController::class, 'index'])
     ->name('home')
     ->middleware('auth');
 
-Route::get('mesas-entrada/data1', [MesaEntradaController::class, 'getData'])->name('recepcionadoData');
-//acceden los autenticados
+Route::get('/', function () {
+    return redirect('/home');
+});
 
-
+// Grupo de rutas protegidas por autenticación
 Route::middleware('auth')->group(function () {
-    Route::get('/arbol', [SistemaController::class, 'mostrarArbol'])
-        ->name('arbol');
-    Route::get('punterosyvotantespordirigente/{equipo?}', [ReportesController::class, 'index'])
-        ->name('punterosyvotantespordirigente');
-    Route::resource('equipo', EquipoController::class);
+   
+    // ========== DASHBOARD ==========
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->name('dashboard.chart-data');
+    Route::post('/dashboard/filter', [DashboardController::class, 'filter'])->name('dashboard.filter');
+
+    // ========== REGISTROS ==========
+    Route::prefix('registros')->name('registros.')->group(function () {
+        Route::get('/', [RegistroController::class, 'index'])->name('index');
+        Route::get('/create', [RegistroController::class, 'create'])->name('create');
+        Route::post('/', [RegistroController::class, 'store'])->name('store');
+        Route::get('/{registro}', [RegistroController::class, 'show'])->name('show');
+        Route::get('/{registro}/edit', [RegistroController::class, 'edit'])->name('edit');
+        Route::put('/{registro}', [RegistroController::class, 'update'])->name('update');
+        Route::delete('/{registro}', [RegistroController::class, 'destroy'])->name('destroy');
+        Route::get('/export/excel', [RegistroController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export/pdf', [RegistroController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/buscar/{cedula}', [RegistroController::class, 'buscarPorCedula'])->name('buscar');
+        Route::get('/{registro}/print', [RegistroController::class, 'print'])->name('print');
+    });
+
+    // ========== BÚSQUEDA GENERAL PARA REGISTROS ==========
+    Route::get('/buscar-persona/{cedula}', [RegistroController::class, 'buscarPersonaPorCedula'])->name('buscar.persona');
+
+    // ========== MOTIVOS ==========
+    Route::prefix('motivos')->name('motivos.')->group(function () {
+        Route::get('/', [MotivoController::class, 'index'])->name('index');
+        Route::post('/', [MotivoController::class, 'store'])->name('store');
+        Route::get('/{motivo}', [MotivoController::class, 'show'])->name('show');
+        Route::put('/{motivo}', [MotivoController::class, 'update'])->name('update');
+        Route::delete('/{motivo}', [MotivoController::class, 'destroy'])->name('destroy');
+        Route::get('/api/all', [MotivoController::class, 'getMotivosApi'])->name('api');
+        Route::get('/export/excel', [MotivoController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/search', [MotivoController::class, 'search'])->name('search');
+    });
+
+    // ========== PROFESIONES ==========
+    Route::prefix('profesiones')->name('profesiones.')->group(function () {
+        Route::get('/', [ProfesionController::class, 'index'])->name('index');
+        Route::get('/create', [ProfesionController::class, 'create'])->name('create');
+        Route::post('/', [ProfesionController::class, 'store'])->name('store');
+        Route::get('/{profesion}', [ProfesionController::class, 'show'])->name('show');
+        Route::get('/{profesion}/edit', [ProfesionController::class, 'edit'])->name('edit');
+        Route::put('/{profesion}', [ProfesionController::class, 'update'])->name('update');
+        Route::delete('/{profesion}', [ProfesionController::class, 'destroy'])->name('destroy');
+        Route::get('/api/all', [ProfesionController::class, 'getProfesionesApi'])->name('api');
+    });
+
+    // ========== SOCIOS ==========
+    Route::prefix('socios')->name('socios.')->group(function () {
+        Route::get('/', [SocioController::class, 'index'])->name('index');
+        Route::get('/create', [SocioController::class, 'create'])->name('create');
+        Route::post('/', [SocioController::class, 'store'])->name('store');
+        Route::get('/{socio}', [SocioController::class, 'show'])->name('show');
+        Route::get('/{socio}/edit', [SocioController::class, 'edit'])->name('edit');
+        Route::put('/{socio}', [SocioController::class, 'update'])->name('update');
+        Route::delete('/{socio}', [SocioController::class, 'destroy'])->name('destroy');
+        Route::get('/buscar/{cedula}', [SocioController::class, 'getByCedula'])->name('buscar');
+        Route::get('/search/ajax', [SocioController::class, 'search'])->name('search');
+        Route::get('/export/excel', [SocioController::class, 'exportExcel'])->name('export.excel');
+    });
+
+    // ========== COPAVIC ==========
+    Route::prefix('copavic')->name('copavic.')->group(function () {
+        Route::get('/', [CopavicController::class, 'index'])->name('index');
+        Route::get('/dashboard', [CopavicController::class, 'dashboard'])->name('dashboard');
+        Route::get('/create', [CopavicController::class, 'create'])->name('create');
+        Route::post('/', [CopavicController::class, 'store'])->name('store');
+        Route::get('/{copavic}', [CopavicController::class, 'show'])->name('show');
+        Route::get('/{copavic}/edit', [CopavicController::class, 'edit'])->name('edit');
+        Route::put('/{copavic}', [CopavicController::class, 'update'])->name('update');
+        Route::delete('/{copavic}', [CopavicController::class, 'destroy'])->name('destroy');
+        Route::get('/buscar/cedula/{cedula}', [CopavicController::class, 'getByCedula'])->name('buscar.cedula');
+        Route::get('/buscar/socio/{socio}', [CopavicController::class, 'getBySocio'])->name('buscar.socio');
+        Route::get('/search/ajax', [CopavicController::class, 'search'])->name('search');
+        Route::get('/export/excel', [CopavicController::class, 'exportExcel'])->name('export.excel');
+    });
+
+    // ========== COOPERATIVA UNIVERSITARIA ==========
+    Route::prefix('coop-universitaria')->name('coop-universitaria.')->group(function () {
+        Route::get('/', [CoopUniversitariaController::class, 'index'])->name('index');
+        Route::get('/dashboard', [CoopUniversitariaController::class, 'dashboard'])->name('dashboard');
+        Route::get('/create', [CoopUniversitariaController::class, 'create'])->name('create');
+        Route::post('/', [CoopUniversitariaController::class, 'store'])->name('store');
+        Route::get('/{coopUniversitaria}', [CoopUniversitariaController::class, 'show'])->name('show');
+        Route::get('/{coopUniversitaria}/edit', [CoopUniversitariaController::class, 'edit'])->name('edit');
+        Route::put('/{coopUniversitaria}', [CoopUniversitariaController::class, 'update'])->name('update');
+        Route::delete('/{coopUniversitaria}', [CoopUniversitariaController::class, 'destroy'])->name('destroy');
+        Route::get('/buscar/cedula/{cedula}', [CoopUniversitariaController::class, 'getByCedula'])->name('buscar.cedula');
+        Route::get('/buscar/socio/{socio}', [CoopUniversitariaController::class, 'getBySocio'])->name('buscar.socio');
+        Route::get('/search/ajax', [CoopUniversitariaController::class, 'search'])->name('search');
+        Route::get('/export/excel', [CoopUniversitariaController::class, 'exportExcel'])->name('export.excel');
+    });
+
+    // ========== PADRÓN ILUMINADO ==========
+    Route::prefix('padron-iluminado')->name('padron-iluminado.')->group(function () {
+        Route::get('/', [PadronIluminadoController::class, 'index'])->name('index');
+        Route::get('/dashboard', [PadronIluminadoController::class, 'dashboard'])->name('dashboard');
+        Route::get('/create', [PadronIluminadoController::class, 'create'])->name('create');
+        Route::post('/', [PadronIluminadoController::class, 'store'])->name('store');
+        Route::get('/{padronIluminado}', [PadronIluminadoController::class, 'show'])->name('show');
+        Route::get('/{padronIluminado}/edit', [PadronIluminadoController::class, 'edit'])->name('edit');
+        Route::put('/{padronIluminado}', [PadronIluminadoController::class, 'update'])->name('update');
+        Route::delete('/{padronIluminado}', [PadronIluminadoController::class, 'destroy'])->name('destroy');
+        Route::get('/buscar/cedula/{cedula}', [PadronIluminadoController::class, 'getByCedula'])->name('buscar.cedula');
+        Route::get('/search/ajax', [PadronIluminadoController::class, 'search'])->name('search');
+        Route::get('/export/excel', [PadronIluminadoController::class, 'exportExcel'])->name('export.excel');
+    });
+
+    // ========== TUS RUTAS EXISTENTES ==========
     Route::resource('useradmin', UserAdminController::class);
     Route::post('sistema', [SistemaController::class, 'store'])->name('sistema.store');
     Route::delete('sistema/{id}', [SistemaController::class, 'destroy'])->name('sistema.destroy');
-
-    // Rutas RESTful estándar: index, store, show, edit, update, destroy
-
-    // Ruta para crear un dirigente vinculado a un equipo
-    // (botón "Agregar Dirigente" en la vista de equipos)
-    Route::get('dirigente/create/{equipo?}', [DirigenteController::class, 'createWithEquipo'])
-        ->name('dirigente.createWithEquipo');
-
-
-    // Ruta para almacenar el dirigente creado desde la vista con equipo
-    Route::post('dirigente/store', [DirigenteController::class, 'store'])->name('dirigente.store');
-
-    // Opcional: si querés listar dirigentes de un equipo específico
-    Route::get('dirigente/equipo/{equipo}', [DirigenteController::class, 'indexByEquipo'])
-        ->name('dirigente.indexByEquipo');
-    Route::get('dirigente', [DirigenteController::class, 'index'])->name('dirigente.index'); // Datatable
-    Route::get('dirigente/create', [DirigenteController::class, 'create'])->name('dirigente.create'); // Form Agregar
-    Route::post('dirigente/store', [DirigenteController::class, 'store'])->name('dirigente.store'); // Guardar
-    Route::get('dirigente/{dirigente}/punteros', [DirigenteController::class, 'punteros'])->name('dirigente.punteros');
-    Route::delete('/dirigente/{id}', [DirigenteController::class, 'destroy'])
-        ->name('dirigente.destroy');
-    Route::get('puntero/createp/{equipo?}', [PunteroController::class, 'createWithDirigente'])
-        ->name('puntero.createWithDirigente');
-
-
-
-
-    // Ruta para crear un puntero vinculado a un equipo
-    // (botón "Agregar Puntero" en la vista de equipos)
-    Route::get('puntero/create/{equipo?}', [PunteroController::class, 'create'])
-        ->name('puntero.createWithEquipo');
-
-
-    // Ruta para almacenar el puntero creado
-    Route::post('puntero/store', [PunteroController::class, 'store'])->name('puntero.store');
-    // Ruta para eliminar un puntero
-
-    Route::delete('/puntero/destroy/{id}', [PunteroController::class, 'destroy'])
-        ->name('puntero.destroy');
-
-    // Opcional: listar punteros de un equipo específico
-    Route::get('puntero/equipo/{equipo}', [PunteroController::class, 'indexByEquipo'])
-        ->name('puntero.indexByEquipo');
-    Route::get('puntero/{idpuntero}/votantes', [VotanteController::class, 'votantespuntero'])
-        ->name('puntero.votantespuntero');
-    Route::delete('/votante/delete/{id}', [VotanteController::class, 'destroy'])
-        ->name('votante.destroy');
-    Route::get('dirigente/buscar-por-cedula/{cedula}', [DirigenteController::class, 'buscarPorCedula'])
-        ->name('dirigente.buscarPorCedula');
-    Route::get('dirigente/buscar-por-cedulap/{cedula}', [DirigenteController::class, 'buscarPorCedula'])
-        ->name('dirigente.buscarPorCedulap');
-    Route::get('votante/buscar-por-cedula/{cedula}', [VotanteController::class, 'buscarPorCedula'])
-        ->name('votante.buscarPorCedula');
-    Route::resource('votante', VotanteController::class)
-        ->except(['destroy']);
+    
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -112,115 +161,14 @@ Route::middleware('auth')->group(function () {
     Route::get('roles/{role}/give-permissions', [RolesController::class, 'addPermissionToRole'])->name('roles.addpermissionrole');
     Route::put('roles/{role}/give-permissions', [RolesController::class, 'givePermissionToRole'])->name('roles.updatepermissionrole');
     Route::resource('permissions', PermissionController::class);
-    Route::get('roles/{role}/give-permissions', [RolesController::class, 'addPermissionToRole'])->name('roles.addpermissionrole');
-    Route::put('roles/{role}/give-permissions', [RolesController::class, 'givePermissionToRole'])->name('roles.updatepermissionrole');
-    // web.php
-    Route::get('dirigentes/data', [DirigenteController::class, 'data'])->name('dirigentes.data');
-
-    Route::get('/votantespordirigente/{id}', [ReportesController::class, 'votantesPorDirigente'])
-        ->name('votantes.por.dirigente');
-    Route::get('/vehiculosporsistema', [ReportesController::class, 'vehicporsis'])
-        ->name('vehiculos.porsistema');
-    Route::get('/porlocal', [ReportesController::class, 'porlocal'])->name('informe.porlocal');
-    Route::get('/porlocal-data', [ReportesController::class, 'getPorlocalData'])->name('informe.porlocal.data');
-    Route::get('/porlocal-detalle', [ReportesController::class, 'getDetalleEquipo'])->name('informe.porlocal.detalle');
-    Route::resource('vehiculo', VehiculoController::class);
-    Route::get('/vehiculos/contrato/{vehiculo}', [VehiculoController::class, 'generarContratoPDF'])
-        ->name('vehiculo.contrato');
-    Route::put('/vehiculos/{vehiculo}/punteros', [VehiculoController::class, 'actualizarPunteros'])
-        ->name('vehiculo.punteros.update');
-    // Traer punteros y asignados de un vehículo
-    Route::get('/vehiculos/{vehiculo}/punteros', [VehiculoController::class, 'punteros'])->name('vehiculos.punteros');
-
-    // Guardar asignaciones
-    Route::post('/vehiculos/punteros/guardar', [VehiculoController::class, 'guardarPunteros'])->name('vehiculos.punteros.guardar');
-    Route::get('/vehiculos/{equipo}/punteroslistar', [VehiculoController::class, 'punteros']);
-    Route::post('/vehiculos/{vehiculo}/punteros', [VehiculoController::class, 'asignarPuntero']);
-    Route::delete('/vehiculos/{vehiculo}/punteros/{puntero}', [VehiculoController::class, 'quitarPuntero']);
-    Route::get('dirigente/data', [DirigenteController::class, 'data'])->name('dirigente.data');
-    // Para modal: traer punteros de un vehículo según su equipo
-    Route::get('/vehiculosasignar/{vehiculo}/punteros', [VehiculoController::class, 'punteros'])
-        ->name('vehiculo.punteros')
-        ->middleware('auth');
-    // Guardar asignación de puntero a vehículo
-    Route::post('/vehiculos/{vehiculo}/punteros/{puntero}', [VehiculoController::class, 'asignarPuntero'])
-        ->name('vehiculo.puntero.asignar')
-        ->middleware('auth');
-    Route::delete('/vehiculos/{vehiculo}/punteros/{puntero}', [VehiculoController::class, 'quitarPuntero'])
-        ->name('vehiculo.puntero.quitar')
-        ->middleware('auth');
-
-    Route::get(
-        'reportes/vehiculos-equipo/{equipo}',
-        [ReportesController::class, 'vehiculosPorEquipo']
-    )->name('reportes.vehiculos.equipo');
-    Route::get('/reportestotalesporsistema', [ReportesController::class, 'totalesporSistema'])->name('reportes.totalesporSistema');
-    // Rutas para Miembros de Mesa - COMPLETAS
-    Route::get('miembros-de-mesa', [MiembroDeMesaController::class, 'index'])
-        ->name('miembros-de-mesa.index');
-
-    Route::get('miembros-de-mesa/create/{equipoId?}', [MiembroDeMesaController::class, 'createWithEquipo'])
-        ->name('miembros-de-mesa.create');
-
-    Route::post('miembros-de-mesa', [MiembroDeMesaController::class, 'store'])
-        ->name('miembros-de-mesa.store');
-
-    // Ruta para mostrar un miembro específico (para editar)
-    Route::get('miembros-de-mesa/{id}', [MiembroDeMesaController::class, 'show'])
-        ->name('miembros-de-mesa.show');
-
-    // Ruta para actualizar un miembro
-    Route::put('miembros-de-mesa/{id}', [MiembroDeMesaController::class, 'update'])
-        ->name('miembros-de-mesa.update');
-
-    Route::delete('miembros-de-mesa/{id}', [MiembroDeMesaController::class, 'destroy'])
-        ->name('miembros-de-mesa.destroy');
-
-    // Ruta para obtener miembros por equipo (AJAX)
-    Route::get('miembros-de-mesa/get-by-equipo/{equipoId}', [MiembroDeMesaController::class, 'getByEquipo'])
-        ->name('miembros-de-mesa.getByEquipo');
-    Route::get('/configuracion-montos', [ConfiguracionMontoController::class, 'index'])
-        ->name('configuracion_montos.index');
-    Route::post('/configuracion-montos/actualizar', [ConfiguracionMontoController::class, 'store'])
-        ->name('configuracion_montos.store');
-    Route::get('configuracion_montos/reporte', [ConfiguracionMontoController::class, 'reporteGeneral'])
-        ->name('configuracion_montos.reporte')
-        ->middleware(['auth', 'permission:Administracion General']);
-    Route::resource('ciudades_electorales', CiudadElectoralController::class);
-
-    Route::get('/ciudades', [SistemaController::class, 'mostrarCiudades'])
-        ->name('ciudades.index'); // opcional según tu sistema de autenticación
-    Route::get('/distritos/{idCiudad}/sistemas', [SistemaController::class, 'sistemasPorDistrito'])
-        ->name('distritos.sistemas');
-    Route::get('/sistemas/{sistema}/dirigentes', [DirigenteController::class, 'dirigentesPorSistema'])
-        ->name('sistemas.dirigentes');
-    Route::post('/dirigentes/ajax', [DirigenteController::class, 'storeAjax'])->name('dirigentes.store.ajax');
-    Route::delete('/dirigentes/ajax/{id}', [DirigenteController::class, 'destroyAjax'])->name('dirigentes.destroy.ajax');
-    Route::get('/dirigente/{dirigente}/punteros/count', [DirigenteController::class, 'getPunterosCount'])->name('dirigente.punteros.count');
-    Route::post('/punteros/store-ajax', [PunteroController::class, 'storeAjax'])->name('puntero.store.ajax');
-    Route::delete('/punteros/destroy-ajax', [PunteroController::class, 'destroyAjax'])->name('puntero.destroy.ajax');
-    // Rutas para punteros (AJAX y filtros)
-    Route::prefix('punteros')->name('puntero.')->group(function () {
-        Route::get('/filtrar', [PunteroController::class, 'filtrarAjax'])->name('filtrar.ajax');
-        Route::delete('/destroy-ajax', [PunteroController::class, 'destroyAjax'])->name('destroy.ajax');
-        Route::post('/store-ajax', [PunteroController::class, 'storeAjax'])->name('store.ajax');
-    });
-    // En tu archivo web.php, dentro del grupo middleware('auth')
-    // Ruta única para buscar personas en el padrón (reutilizable)
+    
     Route::get('/buscar-personas-padron', [PunteroController::class, 'buscarPersonas'])
-        ->name('buscar.personas.padron')
-        ->middleware('auth');
-    // Ruta para obtener punteros por sistema
+        ->name('buscar.personas.padron');
+    
     Route::get('/sistemas/{sistema}/punteros', [PunteroController::class, 'porSistema'])->name('sistemas.punteros');
-    Route::get('/dirigente/{dirigente}/punteros', [PunteroController::class, 'porDirigente'])->name('dirigentes.punteros');
-    Route::get('/equipo/{equipo}/punteros', [PunteroController::class, 'porEquipo'])->name('equipo.punteros');
-    // Agrega esta línea junto a las otras rutas AJAX de votdantes
-    Route::post('/votante/store-ajax', [VotanteController::class, 'storeAjax'])->name('votante.store.ajax');
-    // Ruta para crear vehículo desde el modal del puntero
+});
 
-    Route::get('/puntero/{id}/vehiculos', [PunteroController::class, 'getVehiculos']);
-    Route::post('/vehiculo/from-puntero', [VehiculoController::class, 'storeFromPuntero'])
-        ->name('vehiculo.store.from.puntero');
-    // Ruta para desvincular vehículo de un puntero
-    Route::delete('/vehiculo/{vehiculoId}/puntero/{punteroId}', [VehiculoController::class, 'desvincularPuntero']);
+// Ruta de prueba para verificar que las rutas funcionan
+Route::get('/test', function () {
+    return response()->json(['message' => 'Las rutas funcionan correctamente']);
 });
