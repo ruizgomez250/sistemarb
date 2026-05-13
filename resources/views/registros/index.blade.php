@@ -200,12 +200,12 @@
 
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            
+
                                             <label for="equipo_id" class="form-label fw-bold">
                                                 Profesión
                                             </label>
                                             <x-adminlte-select2 name="profesion_id" id="profesion_id_form"
-                                                 disable-faster-look>
+                                                disable-faster-look>
                                                 @foreach ($profesiones as $profesion)
                                                     <option value="{{ $profesion->id }}">{{ $profesion->descripcion }}
                                                     </option>
@@ -308,12 +308,11 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            
+
                                             <label for="equipo_id" class="form-label fw-bold">
                                                 Motivo Del Contacto
                                             </label>
-                                            <x-adminlte-select2 name="motivo_id" id="motivo_id_form"
-                                                 disable-faster-look>
+                                            <x-adminlte-select2 name="motivo_id" id="motivo_id_form" disable-faster-look>
                                                 <option value="">Seleccione...</option>
                                                 @foreach ($motivos as $motivo)
                                                     <option value="{{ $motivo->id }}">{{ $motivo->descripcion }}
@@ -416,6 +415,259 @@
             </div>
         </div>
     </div>
+    {{-- MODAL EDITAR REGISTRO --}}
+    <div class="modal fade" id="modalEditarRegistro" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit"></i> Editar Registro
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form action="" method="POST" id="formEditarRegistro">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="card mb-3">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="mb-0"><i class="fas fa-user"></i> Datos Personales</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_cedula">Cédula <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                                </div>
+                                                <input type="text" name="cedula" id="edit_cedula"
+                                                    class="form-control" placeholder="Ej: 12345678" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="edit_nombres_y_apellidos">Nombres y Apellidos <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                </div>
+                                                <input type="text" name="nombres_y_apellidos"
+                                                    id="edit_nombres_y_apellidos" class="form-control"
+                                                    placeholder="Nombre completo" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="edit_fecha_nacimiento">Fecha Nacimiento <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                </div>
+                                                <input type="date" name="fecha_nacimiento" id="edit_fecha_nacimiento"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="edit_profesion_id" class="form-label fw-bold">
+                                                Profesión
+                                            </label>
+                                            <select name="profesion_id" id="edit_profesion_id" class="form-control">
+                                                @foreach ($profesiones as $profesion)
+                                                    <option value="{{ $profesion->id }}">{{ $profesion->descripcion }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_telefono1">Teléfono Principal <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                </div>
+                                                <input type="text" name="telefono1" id="edit_telefono1"
+                                                    class="form-control" placeholder="0981xxxxxx" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_telefono2">Teléfono Secundario</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                </div>
+                                                <input type="text" name="telefono2" id="edit_telefono2"
+                                                    class="form-control" placeholder="0982xxxxxx">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_telefono3">Teléfono Adicional</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                </div>
+                                                <input type="text" name="telefono3" id="edit_telefono3"
+                                                    class="form-control" placeholder="0983xxxxxx">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_afiliacion">Afiliación <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-hospital"></i></span>
+                                                </div>
+                                                <input type="text" name="afiliacion" id="edit_afiliacion"
+                                                    class="form-control" placeholder="Seguro Social/IPS" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header bg-secondary text-white">
+                                <h6 class="mb-0"><i class="fas fa-map-marker-alt"></i> Ubicación</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="edit_direccion">Dirección</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-location-dot"></i></span>
+                                                </div>
+                                                <input type="text" name="direccion" id="edit_direccion"
+                                                    class="form-control" placeholder="Calle/Av. y número">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_barrio">Barrio/Compañía <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                                </div>
+                                                <input type="text" name="barrio" id="edit_barrio"
+                                                    class="form-control" placeholder="Nombre del barrio" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="edit_motivo_id" class="form-label fw-bold">
+                                                Motivo Del Contacto
+                                            </label>
+                                            <select name="motivo_id" id="edit_motivo_id" class="form-control">
+                                                <option value="">Seleccione...</option>
+                                                @foreach ($motivos as $motivo)
+                                                    <option value="{{ $motivo->id }}">{{ $motivo->descripcion }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header bg-dark text-white">
+                                <h6 class="mb-0"><i class="fas fa-building"></i> Locales</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="edit_local_interna">Local Interna <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-door-open"></i></span>
+                                                </div>
+                                                <input type="text" name="local_interna" id="edit_local_interna"
+                                                    class="form-control" placeholder="Ej: Consultorio 1" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="edit_local_generales">Locales Generales <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                                </div>
+                                                <input type="text" name="local_generales" id="edit_local_generales"
+                                                    class="form-control" placeholder="Ej: Área Médica" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="edit_observacion_general">Observación General</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-comment"></i></span>
+                                                </div>
+                                                <textarea name="observacion_general" id="edit_observacion_general" class="form-control" rows="3"
+                                                    placeholder="Observaciones adicionales (opcional)"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save"></i> Actualizar Registro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -448,174 +700,310 @@
 @stop
 
 @section('js')
-    <script>
-        const BASE_URL = '{{ url('/') }}';
-        let tablaRegistros = null;
+<script>
+    const BASE_URL = '{{ url('/') }}';
+    let tablaRegistros = null;
 
-        $(document).ready(function() {
-            inicializarSelects();
-            inicializarTablaRegistros();
-            inicializarBusquedaPersona();
+    $(document).ready(function() {
+        inicializarSelects();
+        inicializarTablaRegistros();
+        inicializarBusquedaPersona();
+        inicializarEdicion(); // Nueva función para edición
 
-            @if (session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
 
-            @if (session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '{{ session('error') }}',
-                    confirmButtonColor: '#d33'
-                });
-            @endif
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#d33'
+            });
+        @endif
+    });
+
+    function inicializarSelects() {
+        $('.select2-profesion').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+            placeholder: 'Seleccione una profesión',
+            dropdownParent: $('#modalCrearRegistro')
         });
 
-        function inicializarSelects() {
-            $('.select2-profesion').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: 'Seleccione una profesión',
-                dropdownParent: $('#modalCrearRegistro')
-            });
+        $('.select2-motivo').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+            placeholder: 'Seleccione un motivo',
+            dropdownParent: $('#modalCrearRegistro')
+        });
 
-            $('.select2-motivo').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: 'Seleccione un motivo',
-                dropdownParent: $('#modalCrearRegistro')
-            });
+        $('#motivo_id, #profesion_id').select2({
+            theme: 'bootstrap4',
+            width: '100%'
+        });
+    }
 
-            $('#motivo_id, #profesion_id').select2({
-                theme: 'bootstrap4',
-                width: '100%'
-            });
-        }
+    function inicializarTablaRegistros() {
+        tablaRegistros = $('#registros-table').DataTable({
+            responsive: true,
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            },
+            pageLength: 10,
+            order: [
+                [0, 'asc']
+            ]
+        });
+    }
 
-        function inicializarTablaRegistros() {
-            tablaRegistros = $('#registros-table').DataTable({
-                responsive: true,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-                },
-                pageLength: 10,
-                order: [
-                    [0, 'asc']
-                ]
-            });
-        }
+    function inicializarBusquedaPersona() {
+        const buscarPorCedula = function() {
+            let cedula = $('#cedula').val().trim();
 
-        function inicializarBusquedaPersona() {
-            const buscarPorCedula = function() {
-                let cedula = $('#cedula').val().trim();
+            if (cedula.length < 6) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cédula muy corta',
+                    text: 'Ingrese al menos 6 dígitos para buscar',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
 
-                if (cedula.length < 6) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Cédula muy corta',
-                        text: 'Ingrese al menos 6 dígitos para buscar',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    return;
-                }
-
-                $('#busquedaInfo').html(`
+            $('#busquedaInfo').html(`
                 <div class="info-origen">
                     <i class="fas fa-spinner fa-spin"></i> Buscando en SOCIOS, COOPERATIVA, COPAVIC y PADRÓN...
                 </div>
             `);
 
-                $.ajax({
-                    url: BASE_URL + '/buscar-persona/' + cedula,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.encontrado) {
-                            let origenHtml = `
+            $.ajax({
+                url: BASE_URL + '/buscar-persona/' + cedula,
+                method: 'GET',
+                success: function(response) {
+                    if (response.encontrado) {
+                        let origenHtml = `
                             <div class="info-origen mt-2">
                                 <i class="fas fa-check-circle text-success"></i> 
                                 Datos encontrados en: <strong>${response.origen || 'PADRÓN ILUMINADO'}</strong>
                             </div>
                         `;
-                            $('#busquedaInfo').html(origenHtml);
+                        $('#busquedaInfo').html(origenHtml);
 
-                            if (response.nombre) $('#nombres_y_apellidos').val(response.nombre);
-                            if (response.telefonos && response.telefonos.length > 0) {
-                                $('#telefono1').val(response.telefonos[0] || '');
-                                $('#telefono2').val(response.telefonos[1] || '');
-                                $('#telefono3').val(response.telefonos[2] || '');
-                            }
-                            if (response.direccion) $('#direccion').val(response.direccion);
-                            if (response.barrio) $('#barrio').val(response.barrio);
-                            if (response.afiliacion) $('#afiliacion').val(response.afiliacion);
-                            if (response.fecha_nacimiento) $('#fecha_nacimiento').val(response
-                                .fecha_nacimiento);
-                            if (response.local_interna) $('#local_interna').val(response.local_interna);
-                            if (response.local_generales) $('#local_generales').val(response
-                                .local_generales);
+                        if (response.nombre) $('#nombres_y_apellidos').val(response.nombre);
+                        if (response.telefonos && response.telefonos.length > 0) {
+                            $('#telefono1').val(response.telefonos[0] || '');
+                            $('#telefono2').val(response.telefonos[1] || '');
+                            $('#telefono3').val(response.telefonos[2] || '');
+                        }
+                        if (response.direccion) $('#direccion').val(response.direccion);
+                        if (response.barrio) $('#barrio').val(response.barrio);
+                        if (response.afiliacion) $('#afiliacion').val(response.afiliacion);
+                        if (response.fecha_nacimiento) $('#fecha_nacimiento').val(response
+                            .fecha_nacimiento);
+                        if (response.local_interna) $('#local_interna').val(response.local_interna);
+                        if (response.local_generales) $('#local_generales').val(response
+                            .local_generales);
 
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Persona encontrada',
-                                text: `Datos cargados desde ${response.origen || 'PADRÓN ILUMINADO'}`,
-                                timer: 2000,
-                                showConfirmButton: false,
-                                toast: true,
-                                position: 'top-end'
-                            });
-                        } else {
-                            $('#busquedaInfo').html(`
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Persona encontrada',
+                            text: `Datos cargados desde ${response.origen || 'PADRÓN ILUMINADO'}`,
+                            timer: 2000,
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    } else {
+                        $('#busquedaInfo').html(`
                             <div class="info-origen mt-2 bg-warning text-dark">
                                 <i class="fas fa-exclamation-triangle"></i> 
                                 No se encontraron datos. Complete manualmente.
                             </div>
                         `);
-                        }
-                    },
-                    error: function() {
-                        $('#busquedaInfo').html(`
+                    }
+                },
+                error: function() {
+                    $('#busquedaInfo').html(`
                         <div class="info-origen mt-2 bg-danger text-white">
                             <i class="fas fa-exclamation-circle"></i> Error al buscar.
                         </div>
                     `);
-                    }
-                });
-            };
-
-            $('#cedula').on('blur', buscarPorCedula);
-            $('#cedula').on('keypress', function(e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    buscarPorCedula();
                 }
             });
-            $('#btnBuscarPersona').on('click', buscarPorCedula);
-        }
+        };
 
-        function filtrarPorMotivo() {
-            let motivoId = $('#motivo_id').val();
-            let profesionId = $('#profesion_id').val();
-            window.location.href = BASE_URL + "/registros?motivo_id=" + (motivoId || '') + "&profesion_id=" + (
-                profesionId || '');
-        }
+        $('#cedula').on('blur', buscarPorCedula);
+        $('#cedula').on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                buscarPorCedula();
+            }
+        });
+        $('#btnBuscarPersona').on('click', buscarPorCedula);
+    }
 
-        function filtrarPorProfesion() {
-            let motivoId = $('#motivo_id').val();
-            let profesionId = $('#profesion_id').val();
-            window.location.href = BASE_URL + "/registros?motivo_id=" + (motivoId || '') + "&profesion_id=" + (
-                profesionId || '');
-        }
-
-        $('.btn-ver').on('click', function() {
+    // NUEVA FUNCIÓN PARA MANEJAR LA EDICIÓN
+    function inicializarEdicion() {
+        // Evento para abrir el modal de edición
+        $('.btn-editar').on('click', function() {
             var id = $(this).data('id');
-            $.get(BASE_URL + "/registros/" + id, function(response) {
-                var html = `
+            var url = $(this).data('url');
+            
+            // Configurar la acción del formulario
+            $('#formEditarRegistro').attr('action', url);
+            
+            // Mostrar loading
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Obteniendo datos del registro',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Obtener datos del registro via AJAX
+            $.ajax({
+                url: BASE_URL + "/registros/" + id,
+                method: 'GET',
+                success: function(response) {
+                    Swal.close();
+                    
+                    // Llenar el formulario con los datos
+                    $('#edit_cedula').val(response.cedula);
+                    $('#edit_nombres_y_apellidos').val(response.nombres_y_apellidos);
+                    $('#edit_fecha_nacimiento').val(response.fecha_nacimiento);
+                    $('#edit_telefono1').val(response.telefono1);
+                    $('#edit_telefono2').val(response.telefono2 || '');
+                    $('#edit_telefono3').val(response.telefono3 || '');
+                    $('#edit_afiliacion').val(response.afiliacion);
+                    $('#edit_direccion').val(response.direccion || '');
+                    $('#edit_barrio').val(response.barrio);
+                    $('#edit_local_interna').val(response.local_interna);
+                    $('#edit_local_generales').val(response.local_generales);
+                    $('#edit_observacion_general').val(response.observacion_general || '');
+                    
+                    // Seleccionar profesión
+                    if (response.profesion_id) {
+                        $('#edit_profesion_id').val(response.profesion_id).trigger('change');
+                    }
+                    
+                    // Seleccionar motivo
+                    if (response.motivo_id) {
+                        $('#edit_motivo_id').val(response.motivo_id).trigger('change');
+                    }
+                    
+                    // Abrir el modal
+                    $('#modalEditarRegistro').modal('show');
+                },
+                error: function(xhr) {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los datos del registro',
+                        confirmButtonColor: '#d33'
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+        
+        // Manejar envío del formulario de edición
+        $('#formEditarRegistro').on('submit', function(e) {
+            e.preventDefault();
+            
+            var form = $(this);
+            var url = form.attr('action');
+            var formData = form.serialize();
+            
+            Swal.fire({
+                title: '¿Guardar cambios?',
+                text: "Estás por actualizar este registro",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Mostrar loading
+                    Swal.fire({
+                        title: 'Guardando...',
+                        text: 'Actualizando registro',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Actualizado!',
+                                text: 'El registro ha sido actualizado exitosamente',
+                                confirmButtonColor: '#3085d6'
+                            }).then(() => {
+                                $('#modalEditarRegistro').modal('hide');
+                                location.reload(); // Recargar la página para ver los cambios
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.close();
+                            let errorMsg = 'Error al actualizar el registro';
+                            
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                let errors = Object.values(xhr.responseJSON.errors).flat();
+                                errorMsg = errors.join('\n');
+                            } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMsg = xhr.responseJSON.message;
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: errorMsg,
+                                confirmButtonColor: '#d33'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    function filtrarPorMotivo() {
+        let motivoId = $('#motivo_id').val();
+        let profesionId = $('#profesion_id').val();
+        window.location.href = BASE_URL + "/registros?motivo_id=" + (motivoId || '') + "&profesion_id=" + (
+            profesionId || '');
+    }
+
+    function filtrarPorProfesion() {
+        let motivoId = $('#motivo_id').val();
+        let profesionId = $('#profesion_id').val();
+        window.location.href = BASE_URL + "/registros?motivo_id=" + (motivoId || '') + "&profesion_id=" + (
+            profesionId || '');
+    }
+
+    $('.btn-ver').on('click', function() {
+        var id = $(this).data('id');
+        $.get(BASE_URL + "/registros/" + id, function(response) {
+            var html = `
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card"><div class="card-header bg-info text-white"><h6>Datos Personales</h6></div>
@@ -651,38 +1039,46 @@
                     </div>
                 </div>
             `;
-                $('#verRegistroContent').html(html);
-            });
+            $('#verRegistroContent').html(html);
         });
+    });
 
-        $('.btn-eliminar').on('click', function() {
-            var id = $(this).data('id');
-            var nombre = $(this).data('nombre');
+    $('.btn-eliminar').on('click', function() {
+        var id = $(this).data('id');
+        var nombre = $(this).data('nombre');
 
-            Swal.fire({
-                title: '¿Eliminar registro?',
-                html: `¿Eliminar registro de:<br><strong>${nombre}</strong>?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
+        Swal.fire({
+            title: '¿Eliminar registro?',
+            html: `¿Eliminar registro de:<br><strong>${nombre}</strong>?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
         });
+    });
 
-        function generarReportePDF() {
-            window.open(BASE_URL + "/registros/export/pdf", '_blank');
-        }
+    function generarReportePDF() {
+        window.open(BASE_URL + "/registros/export/pdf", '_blank');
+    }
 
-        $('#modalCrearRegistro').on('hidden.bs.modal', function() {
-            $('#formCrearRegistro')[0].reset();
-            $('.select2-profesion').val(null).trigger('change');
-            $('.select2-motivo').val(null).trigger('change');
-            $('#busquedaInfo').html('');
-        });
-    </script>
+    $('#modalCrearRegistro').on('hidden.bs.modal', function() {
+        $('#formCrearRegistro')[0].reset();
+        $('.select2-profesion').val(null).trigger('change');
+        $('.select2-motivo').val(null).trigger('change');
+        $('#busquedaInfo').html('');
+    });
+    
+    // Limpiar modal de edición al cerrar
+    $('#modalEditarRegistro').on('hidden.bs.modal', function() {
+        $('#formEditarRegistro')[0].reset();
+        $('#formEditarRegistro').attr('action', '');
+        $('#edit_profesion_id').val('').trigger('change');
+        $('#edit_motivo_id').val('').trigger('change');
+    });
+</script>
 @stop
