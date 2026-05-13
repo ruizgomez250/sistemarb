@@ -86,66 +86,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/api/all', [ProfesionController::class, 'getProfesionesApi'])->name('api');
     });
 
-    // ========== SOCIOS ==========
-    Route::prefix('socios')->name('socios.')->group(function () {
-        Route::get('/', [SocioController::class, 'index'])->name('index');
-        Route::get('/create', [SocioController::class, 'create'])->name('create');
-        Route::post('/', [SocioController::class, 'store'])->name('store');
-        Route::get('/{socio}', [SocioController::class, 'show'])->name('show');
-        Route::get('/{socio}/edit', [SocioController::class, 'edit'])->name('edit');
-        Route::put('/{socio}', [SocioController::class, 'update'])->name('update');
-        Route::delete('/{socio}', [SocioController::class, 'destroy'])->name('destroy');
-        Route::get('/buscar/{cedula}', [SocioController::class, 'getByCedula'])->name('buscar');
-        Route::get('/search/ajax', [SocioController::class, 'search'])->name('search');
-        Route::get('/export/excel', [SocioController::class, 'exportExcel'])->name('export.excel');
-    });
+    
 
     // ========== COPAVIC ==========
-    Route::prefix('copavic')->name('copavic.')->group(function () {
-        Route::get('/', [CopavicController::class, 'index'])->name('index');
-        Route::get('/dashboard', [CopavicController::class, 'dashboard'])->name('dashboard');
-        Route::get('/create', [CopavicController::class, 'create'])->name('create');
-        Route::post('/', [CopavicController::class, 'store'])->name('store');
-        Route::get('/{copavic}', [CopavicController::class, 'show'])->name('show');
-        Route::get('/{copavic}/edit', [CopavicController::class, 'edit'])->name('edit');
-        Route::put('/{copavic}', [CopavicController::class, 'update'])->name('update');
-        Route::delete('/{copavic}', [CopavicController::class, 'destroy'])->name('destroy');
-        Route::get('/buscar/cedula/{cedula}', [CopavicController::class, 'getByCedula'])->name('buscar.cedula');
-        Route::get('/buscar/socio/{socio}', [CopavicController::class, 'getBySocio'])->name('buscar.socio');
-        Route::get('/search/ajax', [CopavicController::class, 'search'])->name('search');
-        Route::get('/export/excel', [CopavicController::class, 'exportExcel'])->name('export.excel');
-    });
+    
 
     // ========== COOPERATIVA UNIVERSITARIA ==========
-    Route::prefix('coop-universitaria')->name('coop-universitaria.')->group(function () {
-        Route::get('/', [CoopUniversitariaController::class, 'index'])->name('index');
-        Route::get('/dashboard', [CoopUniversitariaController::class, 'dashboard'])->name('dashboard');
-        Route::get('/create', [CoopUniversitariaController::class, 'create'])->name('create');
-        Route::post('/', [CoopUniversitariaController::class, 'store'])->name('store');
-        Route::get('/{coopUniversitaria}', [CoopUniversitariaController::class, 'show'])->name('show');
-        Route::get('/{coopUniversitaria}/edit', [CoopUniversitariaController::class, 'edit'])->name('edit');
-        Route::put('/{coopUniversitaria}', [CoopUniversitariaController::class, 'update'])->name('update');
-        Route::delete('/{coopUniversitaria}', [CoopUniversitariaController::class, 'destroy'])->name('destroy');
-        Route::get('/buscar/cedula/{cedula}', [CoopUniversitariaController::class, 'getByCedula'])->name('buscar.cedula');
-        Route::get('/buscar/socio/{socio}', [CoopUniversitariaController::class, 'getBySocio'])->name('buscar.socio');
-        Route::get('/search/ajax', [CoopUniversitariaController::class, 'search'])->name('search');
-        Route::get('/export/excel', [CoopUniversitariaController::class, 'exportExcel'])->name('export.excel');
-    });
+    
 
     // ========== PADRÓN ILUMINADO ==========
-    Route::prefix('padron-iluminado')->name('padron-iluminado.')->group(function () {
-        Route::get('/', [PadronIluminadoController::class, 'index'])->name('index');
-        Route::get('/dashboard', [PadronIluminadoController::class, 'dashboard'])->name('dashboard');
-        Route::get('/create', [PadronIluminadoController::class, 'create'])->name('create');
-        Route::post('/', [PadronIluminadoController::class, 'store'])->name('store');
-        Route::get('/{padronIluminado}', [PadronIluminadoController::class, 'show'])->name('show');
-        Route::get('/{padronIluminado}/edit', [PadronIluminadoController::class, 'edit'])->name('edit');
-        Route::put('/{padronIluminado}', [PadronIluminadoController::class, 'update'])->name('update');
-        Route::delete('/{padronIluminado}', [PadronIluminadoController::class, 'destroy'])->name('destroy');
-        Route::get('/buscar/cedula/{cedula}', [PadronIluminadoController::class, 'getByCedula'])->name('buscar.cedula');
-        Route::get('/search/ajax', [PadronIluminadoController::class, 'search'])->name('search');
-        Route::get('/export/excel', [PadronIluminadoController::class, 'exportExcel'])->name('export.excel');
-    });
+    
 
     // ========== TUS RUTAS EXISTENTES ==========
     Route::resource('useradmin', UserAdminController::class);
